@@ -1,0 +1,193 @@
+1) Padrões Comuns Entre as Estruturas
+Atributos em Comum:
+	Estrutura Base:
+
+	As listas, pilhas e filas são compostas por nós que armazenam:
+	Valor (dados): 
+		Um campo para armazenar o valor.
+	Ponteiro(s): 
+		Um ou dois ponteiros para conectar os nós.
+
+	Exemplo de Nó Dinâmico:
+		struct Node {
+				int data;        // Valor armazenado
+				Node* next;      // Ponteiro para o próximo nó (ou anterior em listas duplamente encadeadas)
+		};
+
+	Exemplo de Vetor Estático:
+		int data[MAX_SIZE]; // Valores armazenados em posições contíguas
+
+	Tamanho ou Contador:
+		int count; // Número de elementos na estrutura
+		
+	Operações em Comum:
+		As seguintes operações aparecem em todas as estruturas, ainda que implementadas de forma diferente:
+		Inserção:
+			Todas as estruturas têm uma operação para inserir novos elementos.
+				void Append(int x); // Insere um elemento
+
+		Remoção:
+			Há sempre uma operação para remover elementos.
+				void Serve(); // Remove um elemento (como o início ou o topo)
+
+		Consulta:
+			Funções para acessar elementos (como o início ou o final) sem removê-los.
+				int Front(); // Retorna o primeiro elemento
+				int Back();  // Retorna o último elemento
+
+
+		Verificação de Estado:
+			Operações para verificar se a estrutura está vazia ou cheia.
+				bool IsEmpty(); // Verifica se a estrutura está vazia
+
+		Limpeza:
+			Função para esvaziar a estrutura.
+				void Clear(); // Esvazia a estrutura
+
+2) Diferenças Específicas Entre as Estruturas
+	Pilha
+		Características:
+			Baseada no conceito LIFO (Last In, First Out).
+			Só permite acesso ao elemento no topo.
+			Operações Específicas:
+				Push:
+					Insere no topo.
+						void Push(int x);  // Insere no topo
+				Pop: 
+					Remove do topo.
+						void Pop();        // Remove o elemento do topo
+				Top: 
+					Consulta o elemento no topo.
+						int Top();         // Consulta o elemento do topo
+
+	Fila
+		Características:
+			Baseada no conceito FIFO (First In, First Out).
+			O primeiro elemento inserido é o primeiro a ser removido.
+				Operações Específicas:
+					Append: 
+						Insere no final.
+							void Append(int x); // Insere no final
+					Serve: 
+						Remove do início.
+							void Serve();       // Remove do início
+
+	Lista Simples
+		Características:
+			Uma sequência linear de nós conectados por ponteiros.
+			Permite inserir e remover em posições arbitrárias.
+				Operações Específicas:
+					Inserir em qualquer posição.
+						void Insert(int position, int x); // Insere em uma posição específica
+					Remover de qualquer posição.
+						void Delete(int position);        // Remove de uma posição específica
+
+	Lista Ordenada
+		Características:
+			Similar à lista simples, mas os elementos são mantidos em ordem.
+			A inserção coloca o elemento na posição correta automaticamente.
+				Operações Específicas:
+					Insert: Insere em ordem.
+						void Insert(int x); // Insere em ordem
+					Delete: Remove um elemento
+						void Delete(int x); // Remove um elemento específico
+
+	Lista Duplamente Encadeada com Sentinela
+	Características:
+		Cada nó tem ponteiros para o próximo e o anterior.
+			O nó sentinela facilita a manipulação da estrutura, evitando casos especiais para cabeça e cauda.
+				Operações Específicas:
+					Inserção e remoção são feitas em relação ao nó sentinela.
+						void Insert(int x); // Insere um elemento
+						void Delete(int x); // Remove um elemento
+
+3. O Que Decorar: Código Comum
+	Se você decorar as seguintes partes, estará preparado para todas as estruturas mencionadas:
+		Atributos Comuns
+			struct Node {
+				int data;
+				Node* next;  // Para listas simples, filas e pilhas
+				Node* prev;  // Apenas para listas duplamente encadeadas
+				};
+			int count;       // Número de elementos na estrutura
+
+		Operações Básicas
+			bool IsEmpty();        // Verifica se está vazia
+			void Clear();          // Esvazia a estrutura
+			int Size();            // Retorna o número de elementos
+			int Front();           // Retorna o primeiro elemento
+			int Back();            // Retorna o último elemento (para listas e filas)
+
+		Inserção e Remoção
+			Inserção no início (para pilha ou listas simples):
+				void Push(int x) {
+						Node* newNode = new Node;
+						newNode->data = x;
+						newNode->next = head;
+						head = newNode;
+						count++;
+				}
+
+		Remoção no início (para filas ou listas):
+			void Serve() {
+					if (IsEmpty()) throw std::runtime_error("Estrutura vazia!");
+					Node* temp = head;
+					head = head->next;
+					delete temp;
+					count--;
+			}
+
+Conceitos Teóricos
+	Diferença entre Estruturas:
+		Pilha (LIFO): Último a entrar é o primeiro a sair.
+		Fila (FIFO): Primeiro a entrar é o primeiro a sair.
+		Lista Simples: Inserção e remoção em qualquer posição.
+		Lista Ordenada: Mantém os elementos em ordem.
+		Lista Duplamente Encadeada com Sentinela: Facilitam manipulação, com ponteiros para o próximo e anterior e um nó sentinela.
+
+	Complexidade de Tempo das Operações (Big-O):
+		Saiba avaliar a eficiência das operações básicas:
+		Pilha e Fila: Inserção e remoção são geralmente O(1).
+		Listas Simples: Inserção e remoção podem ser O(1) (no início ou no final) ou O(n) (em posições arbitrárias).
+		Listas Ordenadas: Inserção pode ser O(n) devido à busca para encontrar a posição correta.
+
+	Diferença entre Estruturas Estáticas e Dinâmicas:
+		Estáticas: Usam um vetor fixo, como filas e pilhas estáticas.
+		Dinâmicas: Usam alocação dinâmica de memória, como listas encadeadas e filas dinâmicas.
+
+	Sentinelas:
+	Saber o que são:
+		Nós fictícios usados em listas duplamente encadeadas para simplificar a lógica.
+	Como funcionam:
+		Sentinelas não armazenam dados e evitam condições especiais para "início" e "fim".
+
+Implementação
+	Operações que aparecem frequentemente:
+		Inserção (no início, no final ou em posição arbitrária).
+		Remoção (no início, no final ou em posição arbitrária).
+		Busca de elementos.
+		Esvaziar a estrutura.
+		Retornar o tamanho da estrutura.
+
+	Gerenciamento de Ponteiros em Estruturas Dinâmicas:
+		Saber manipular ponteiros corretamente em listas encadeadas.
+
+		Exemplo:
+			Node* newNode = new Node;
+			newNode->data = x;
+			newNode->next = head;
+			head = newNode;
+
+	Rotação Circular em Estruturas Estáticas:
+	Saber usar operadores como % para implementar filas circulares:
+		tail = (tail + 1) % MAX_SIZE;
+
+	Destrutores em Estruturas Dinâmicas:
+		Saber liberar memória para evitar vazamentos.
+
+		Exemplo:
+			while (head != nullptr) {
+					Node* temp = head;
+					head = head->next;
+					delete temp;
+			}
